@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IPL Points Table</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background: linear-gradient(to right, #e96443, #904e95);
+			font-family: Arial, sans-serif;
+			color: #fff;
+		}
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		th, td {
+			text-align: left;
+			padding: 8px;
+			border: 1px solid black;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+
+		input[type=number] {
+			width: 50px;
+		}
+	</style>
+</head>
+<body>
+	<h1>IPL Points Table</h1>
+	<form>
+		<label for="team1">Team 1:</label>
+		<select id="team1" name="team1">
+			<option value="RCB">RCB</option>
+			<option value="MI">MI</option>
+			<option value="CSK">CSK</option>
+			<option value="KKR">KKR</option>
+			<option value="RR">RR</option>
+			<option value="SRH">SRH</option>
+			<option value="GT">GT</option>
+			<option value="PBKS">PBKS</option>
+			<option value="DC">DC</option>
+			<option value="LSG">LSG</option>
+		</select>
+		<label for="team2">Team 2:</label>
+		<select id="team2" name="team2">
+			<option value="RCB">RCB</option>
+			<option value="MI">MI</option>
+			<option value="CSK">CSK</option>
+			<option value="KKR">KKR</option>
+			<option value="RR">RR</option>
+			<option value="SRH">SRH</option>
+			<option value="GT">GT</option>
+			<option value="PBKS">PBKS</option>
+			<option value="DC">DC</option>
+			<option value="LSG">LSG</option>
+		</select>
+		<button type="button" onclick="checkTeams()">Submit</button>
+		<br><br>
+		<label for="winner">Winner:</label>
+		<select id="winner" name="winner">
+			<option value="Tie/NR">Tie/NR</option>
+			<option value="team1">Team 1</option>
+			<option value="team2">Team 2</option>
+		</select>
+		<br><br>
+		<label for="team1runs">Team 1 Runs:</label>
+		<input type="number" id="team1runs" name="team1runs" min="0">
+		<label for="team1overs">Overs:</label>
+		<input type="number" id="team1overs" name="team1overs" min="1" max="20">
+		<br><br>
+		<label for="team2runs">Team 2 Runs:</label>
+		<input type="number" id="team2runs" name="team2runs" min="0">
+		<label for="team2overs">Overs:</label>
+		<input type="number" id="team2overs" name="team2overs" min="1" max="20">
+		<br><br>
+		<button type="button" onclick="calculate()">Calculate</button>
+	</form>
+
+	<br><br>
+	<table id="pointsTable">
+		<thead>
+			<tr>
+				<th>S.N.</th>
+                			<th>Team Name</th>
+			<th>Matches</th>
+			<th>Wins</th>
+			<th>Losses</th>
+			<th>Tie/NR</th>
+			<th>Net Run Rate</th>
+			<th>Points</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td>RCB</td>
+			<td id="rcbMatches">0</td>
+			<td id="rcbWins">0</td>
+			<td id="rcbLosses">0</td>
+			<td id="rcbTieNR">0</td>
+			<td id="rcbNRR">0.00</td>
+			<td id="rcbPoints">0</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>MI</td>
+			<td id="miMatches">0</td>
+			<td id="miWins">0</td>
+			<td id="miLosses">0</td>
+			<td id="miTieNR">0</td>
+			<td id="miNRR">0.00</td>
+			<td id="miPoints">0</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>CSK</td>
+			<td id="cskMatches">0</td>
+			<td id="cskWins">0</td>
+			<td id="cskLosses">0</td>
+			<td id="cskTieNR">0</td>
+			<td id="cskNRR">0.00</td>
+			<td id="cskPoints">0</td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>KKR</td>
+			<td id="kkrMatches">0</td>
+			<td id="kkrWins">0</td>
+			<td id="kkrLosses">0</td>
+			<td id="kkrTieNR">0</td>
+			<td id="kkrNRR">0.00</td>
+			<td id="kkrPoints">0</td>
+		</tr>
+		<tr>
+			<td>5</td>
+			<td>RR</td>
+			<td id="rrMatches">0</td>
+			<td id="rrWins">0</td>
+			<td id="rrLosses">0</td>
+			<td id="rrTieNR">0</td>
+			<td id="rrNRR">0.00</td>
+			<td id="rrPoints">0</td>
+		</tr>
+		<tr>
+			<td>6</td>
+			<td>SRH</td>
+			<td id="srhMatches">0</td>
+			<td id="srhWins">0</td>
+			<td id="srhLosses">0</td>
+			<td id="srhTieNR">0</td>
+			<td id="srhNRR">0.00</td>
+			<td id="srhPoints">0</td>
+		</tr>
+		<tr>
+			<td>7</td>
+			<td>GT</td>
+			<td id="gtMatches">0</td>
+			<td id="gtWins">0</td>
+  			<td id="gtLosses">0</td>
+			<td id="gtTieNR">0</td>
+			<td id="gtNRR">0.00</td>
+			<td id="gtPoints">0</td>
+		</tr>
+		<tr>
+			<td>8</td>
+			<td>PBKS</td>
+			<td id="pbksMatches">0</td>
+			<td id="pbksWins">0</td>
+  			<td id="pbksLosses">0</td>
+			<td id="pbksTieNR">0</td>
+			<td id="pbksNRR">0.00</td>
+			<td id="pbksPoints">0</td>
+		</tr>
+		<tr>
+			<td>9</td>
+			<td>DC</td>
+			<td id="dcMatches">0</td>
+			<td id="dcWins">0</td>
+  			<td id="dcLosses">0</td>
+			<td id="dcTieNR">0</td>
+			<td id="dcNRR">0.00</td>
+			<td id="dcPoints">0</td>
+		</tr>
+		<tr>
+			<td>10</td>
+			<td>LSG</td>
+			<td id="lsgMatches">0</td>
+			<td id="lsgWins">0</td>
+			<td id="lsgLosses">0</td>
+			<td id="lsgTieNR">0</td>
+			<td id="lsgNRR">0.00</td>
+			<td id="lsgPoints">0</td>
+		</tr>
+</tbody>
+</table>
+
+<script>
+	function checkTeams() {
+		const team1 = document.getElementById("team1").value;
+		const team2 = document.getElementById("team2").value;
+
+		if (team1 === team2) {
+			alert("Both teams cannot be the same.");
+		}
+	}
+
+	function calculate() {
+		const team1 = document.getElementById("team1").value;
+		const team2 = document.getElementById("team2").value;
+		const winner = document.getElementById("winner").value;
+
+		const team1Runs = parseInt(document.getElementById("team1runs").value);
+		const team1Overs = parseFloat(document.getElementById("team1overs").value);
+		const team2Runs = parseInt(document.getElementById("team2runs").value);
+		const team2Overs = parseFloat(document.getElementById("team2overs").value);
+
+		const team1NRR = (team1Runs / team1Overs) - (team2Runs / team2Overs);
+		const team2NRR = -team1NRR;
+
+		if (winner === "team1") {
+			updatePointsTable(team1, 1, 0, 0, team1NRR);
+			updatePointsTable(team2, 0, 1, 0, team2NRR);
+		} else if (winner === "team2") {
+			updatePointsTable(team1, 0, 1, 0, team1NRR);
+			updatePointsTable(team2, 1, 0, 0, team2NRR);
+		} else {
+			updatePointsTable(team1, 0, 0, 1, team1NRR);
+			updatePointsTable(team2, 0, 0, 1, team2NRR);
+		}
+	}
+
+	function updatePointsTable(team, wins, losses, tieNR, nrr) {
+		const matches = document.getElementById(team.toLowerCase() + "Matches");
+		const winsCell = document.getElementById(team.toLowerCase() + "Wins");
+		const lossesCell = document.getElementById(team.toLowerCase() + "Losses");
+		const tieNRCell = document.getElementById(team.toLowerCase() + "TieNR");
+		const nrrCell = document.getElementById(team.toLowerCase() + "NRR");
+		const pointsCell = document.getElementById(team.toLowerCase() + "Points");
+
+		matches.innerHTML = parseInt(matches.innerHTML) + 1;
+		winsCell.innerHTML = parseInt(winsCell.innerHTML) + wins;
+		lossesCell.innerHTML = parseInt(lossesCell.innerHTML) + losses;
+		tieNRCell.innerHTML = parseInt(tieNRCell.innerHTML) + tieNR;
+		nrrCell.innerHTML = (parseFloat(nrrCell.innerHTML) + nrr).toFixed(2);
+		pointsCell.innerHTML = parseInt(pointsCell.innerHTML) + (2 * wins) + tieNR;
+	}
+</script>
+</body>
+</html>
